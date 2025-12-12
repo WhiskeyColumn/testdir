@@ -12,8 +12,10 @@ jobs:
       run: |
         Invoke-WebRequest -Uri "https://downloads.ngrok.com/windows/ngrok-v3-stable-windows-amd64.zip" -OutFile ngrok.zip
 
-    - name: Extract
-      run: Expand-Archive ngrok.zip -DestinationPath ngrok
+    - name: Extract Ngrok
+      run: |
+        Expand-Archive ngrok.zip -DestinationPath .
+        Rename-Item -Path ".\ngrok-v3-stable-windows-amd64" -NewName "ngrok"
 
     - name: Auth
       run: .\ngrok\ngrok.exe config add-authtoken $Env:NGROK_AUTH_TOKEN
