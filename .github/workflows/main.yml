@@ -11,11 +11,10 @@ jobs:
     - name: Download Ngrok Baru
       run: Invoke-WebRequest "https://downloads.ngrok.com/windows/ngrok-v3-stable-windows-amd64.zip" -OutFile ngrok.zip
 
-    - name: Extract
-      run: Expand-Archive ngrok.zip -DestinationPath .
-
-    - name: Move Folder
-      run: Rename-Item "ngrok-v3-stable-windows-amd64" "ngrok"
+    - name: Extract Ngrok (7zip Anti Error)
+      run: |
+        7z x ngrok.zip -ongrok_folder
+        Rename-Item "ngrok_folder\ngrok-v3-stable-windows-amd64" "ngrok"
 
     - name: Auth
       run: .\ngrok\ngrok.exe config add-authtoken $Env:NGROK_AUTH_TOKEN
@@ -30,5 +29,5 @@ jobs:
 
     - run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "@WirpOnTop" -Force)
 
-    - name: Create Tunnel
+    - name: Run Tunnel
       run: .\ngrok\ngrok.exe tcp 3389
